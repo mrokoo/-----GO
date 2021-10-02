@@ -1,6 +1,8 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
 const MAXSIZE = 10
 
@@ -25,8 +27,27 @@ func InitSqlist(booklist *Sqlist) string {
 	return "OK"
 }
 
+func GetElem(booklist *Sqlist, i int) (Book, error) {
+	if i < 0 || i > MAXSIZE { // golang会给所有未初始化的变量赋予零值。
+		return Book{}, fmt.Errorf("%v索引不符合要求", i)
+	}
+
+	return booklist.Book[i], nil
+}
+
 func main() {
 	booklist := new(Sqlist)
 	stauts := InitSqlist(booklist)
 	fmt.Println(stauts)
+
+	fmt.Println(GetElem(booklist, 2))
+
+	booklist.Book[2] = Book{id: "123456", name: "sf", price: 12.5}
+
+	if i, err := GetElem(booklist, 2); err != nil {
+		fmt.Println(err)
+		return
+	} else {
+		fmt.Println(i)
+	}
 }
